@@ -302,6 +302,9 @@ class ScaraV1MiniGripper():
         return True
 
     def down_enable(self):
+        '''
+            下使能
+        '''
         self.scara_arm.down_enable();
         self.gripper_controller.down_enable_motor();
         self.cutter_controller.down_enable_motor();
