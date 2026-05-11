@@ -1,0 +1,60 @@
+{
+    "EC-A2806-P2-36":{
+        "brand": "Encos",
+        "gear_ratio": 36,
+        "encoder_resolution": 16384,
+        "rated_speed": 207,
+        "peak_speed": 220,
+        "scale_factor": 1,
+        "ctrl_frequency": 1000
+    },
+    "EC-A4310-P2-36":{
+        "brand": "Encos",
+        "gear_ratio": 36,
+        "encoder_resolution": 16384,
+        "rated_speed": 150,
+        "peak_speed": 178,
+        "scale_factor": 1,
+        "ctrl_frequency": 1000
+    },
+    "EC-A4315-P2-36":{
+        "brand": "Encos",
+        "gear_ratio": 36,
+        "encoder_resolution": 16384,
+        "DPR": 360,
+        "rated_speed": 109,
+        "peak_speed": 117,
+        "scale_factor": 1,
+        "ctrl_frequency": 1000
+    },
+    "EC-A4315-C0049":{
+        "brand": "Encos",
+        "gear_ratio": 36,
+        "encoder_resolution": 16384,
+        "DPR": 10,
+        "rated_speed": 109,
+        "peak_speed": 117,
+        "scale_factor": 36,
+        "ctrl_frequency": 1000
+    },
+    "EC-A6408-P2-25":{
+        "brand": "Encos",
+        "gear_ratio": 25,
+        "encoder_resolution": 16384,
+        "DPR": 360,
+        "rated_speed": 133,
+        "peak_speed": 149,
+        "scale_factor": 1,
+        "ctrl_frequency": 1000
+    },
+    "EC-A10020-P1-12": {
+        "brand": "Encos",
+        "gear_ratio": 12,
+        "encoder_resolution": 16384,
+        "DPR": 360,
+        "rated_speed": 127,
+        "peak_speed": 140,
+        "scale_factor": 1,
+        "ctrl_frequency": 1000
+    }
+}

@@ -1,0 +1,152 @@
+{
+    "left_scara_base_can" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A4315-P2-36",
+        "com_protocol" : "CAN",
+        "can_id" : 1,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : -270,
+            "max" : -110
+        },
+        "initialization" : {
+            "acceleration" : 6,
+            "up_enable" : true
+        }
+    },
+    "left_scara_middle_can" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A4315-P2-36",
+        "com_protocol" : "CAN",
+        "can_id" : 2,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : 15,
+            "max" : 345
+        },
+        "initialization" : {
+            "acceleration" : 10,
+            "up_enable" : true
+        }
+    },
+    "left_scara_lifting_can" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A4315-C0049",
+        "com_protocol" : "CAN",
+        "can_id" : 3,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : 0,
+            "max" : 250
+        },
+        "initialization" : {
+            "acceleration" : 10,
+            "up_enable" : true
+        }
+    },
+    "right_scara_base_can" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A4315-P2-36",
+        "com_protocol" : "CAN",
+        "can_id" : 1,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : 110,
+            "max" : 270
+        },
+        "initialization" : {
+            "acceleration" : 6,
+            "up_enable" : true
+        }
+    },
+    "right_scara_middle_can" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A4315-P2-36",
+        "com_protocol" : "CAN",
+        "can_id" : 2,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : -345,
+            "max" : -15
+        },
+        "initialization" : {
+            "acceleration" : 10,
+            "up_enable" : true
+        }
+    },
+    "right_scara_lifting_can" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A4315-C0049",
+        "com_protocol" : "CAN",
+        "can_id" : 3,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : 0,
+            "max" : 250
+        },
+        "initialization" : {
+            "acceleration" : 10,
+            "up_enable" : true
+        }
+    },
+    "test1" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A4315-P2-36",
+        "com_protocol" : "CAN",
+        "can_id" : 1,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : -360,
+            "max" : 360
+        },
+        "initialization" : {
+            "acceleration" : 8,
+            "up_enable" : true
+        }
+    },
+    "test2" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A4315-P2-36",
+        "com_protocol" : "CAN",
+        "can_id" : 2,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : -360,
+            "max" : 360
+        },
+        "initialization" : {
+            "acceleration" : 8,
+            "up_enable" : true
+        }
+    },
+    "test3" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A2806-P2-36",
+        "com_protocol" : "CAN",
+        "can_id" : 3,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : -360,
+            "max" : 360
+        },
+        "initialization" : {
+            "acceleration" : 20,
+            "up_enable" : true
+        }
+    },
+    "test4" : {
+        "module_type" : "Encos",
+        "module_name" : "EC-A2806-P2-36",
+        "com_protocol" : "CAN",
+        "can_id" : 4,
+        "baudrate" : 1000000,
+        "movement_range" : {
+            "min" : -360,
+            "max" : 360
+        },
+        "initialization" : {
+            "acceleration" : 20,
+            "up_enable" : true
+        }
+    }
+}

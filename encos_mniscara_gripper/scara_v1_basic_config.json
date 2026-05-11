@@ -1,0 +1,68 @@
+{
+    "1": {
+        "arm": {
+            "arm_type": "left",
+            "controller_names": [
+                "left_scara_base_can",
+                "left_scara_middle_can"
+            ],
+            "link_lengths": [
+                220.0,
+                220.0
+            ],
+            "calibration": {
+                "offsets": [
+                    180.14429669082165,
+                    -180.08089515566826
+                ],
+                "signs": [
+                    1,
+                    1
+                ]
+            }
+        },
+        "lifting": {
+            "controller_name": "left_scara_lifting_can",
+            "max_travel": 250.0,
+            "max_speed_mm": 500.0,
+            "screw_lead": 10.0,
+            "calibration": {
+                "sign": 1,
+                "zero_pos": 4
+            }
+        }
+    },
+    "0": {
+        "arm": {
+            "arm_type": "right",
+            "controller_names": [
+                "right_scara_base_can",
+                "right_scara_middle_can"
+            ],
+            "link_lengths": [
+                220.0,
+                220.0
+            ],
+            "calibration": {
+                "offsets": [
+                    -180.15904453396797,
+                    180.00375976623036
+                ],
+                "signs": [
+                    1,
+                    1
+                ]
+            }
+        },
+        "lifting": {
+            "controller_name": "right_scara_lifting_can",
+            "max_travel": 250.0,
+            "max_speed_mm": 600.0,
+            "screw_lead": 10.0,
+            "calibration": {
+                "sign": 1,
+                "zero_pos": -36
+            }
+        }
+    }
+}
