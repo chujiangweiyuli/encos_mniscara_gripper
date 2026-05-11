@@ -5,16 +5,9 @@
             "test3",
             "test4"
         ],
-        "gripper_open_angle": 14,
-        "gripper_close_angle": 0,
-        "max_open_angle": 10,
+        "max_open_angle": 20,
         "min_open_angle": 0,
-        "gear_ratio": 1,
-        "close_speed_rpm": 30,
-        "open_speed_rpm": 30,
-        "cut_speed_rpm": 30,
-        "cut_angle": 15,
-        "homing_torque": -0.5
+        "gear_ratio": 1
 
 
     },
@@ -24,13 +17,8 @@
             "test3",
             "test4"
         ],
-        "gripper_open_angle": 14,
-        "gripper_close_angle": 0,
-        "close_speed_rpm": 30,
-        "gear_ratio": 1,
-        "open_speed_rpm": 30,
-        "cut_speed_rpm": 30,
-        "cut_angle": 0,
-        "homing_torque": 0.5
+        "max_open_angle": 20,
+        "min_open_angle": 0,
+        "gear_ratio": 1
     }
 }

@@ -101,24 +101,21 @@ class ScaraV1MiniGripper():
         logger.info(f"Cutter controller initialized with com_port: {gripper_com_port}, controller_name: {self.cutter_controller_name}")
 
         # 夹爪和切刀配置参数
-        self.gripper_open_angle = self.gripper_config_data.get("gripper_open_angle", 8)
-        self.gripper_close_angle = self.gripper_config_data.get("gripper_close_angle", 0)
         self.gear_ratio = self.gripper_config_data.get("gear_ratio", 1)
-        self.max_open_angle = self.gripper_config_data.get("max_open_angle",10)
+        self.max_open_angle = self.gripper_config_data.get("max_open_angle",20)
         self.min_open_angle = self.gripper_config_data.get("min_open_angle", 0)
-        self.close_speed_rpm = self.gripper_config_data.get("close_speed_rpm", 30)
-        self.open_speed_rpm = self.gripper_config_data.get("open_speed_rpm", 30)
-        self.cut_speed_rpm = self.gripper_config_data.get("cut_speed_rpm", 100)
-        self.cut_angle = self.gripper_config_data.get("cut_angle", 15)
-        self.homing_torque = self.gripper_config_data.get("homing_torque", 0.2)
 
 
     
-    def _homing_gripper(self):
+    def _homing_gripper(self, homing_torque=-0.5):
+        '''
+        Args:
+            homing_torque: 回零力矩
+        '''
         print("开始回零夹爪电机")
         self.gripper_controller.up_enable_motor()
         time.sleep(1)
-        self.gripper_controller.set_target_torque(self.homing_torque)
+        self.gripper_controller.set_target_torque(homing_torque)
         time.sleep(2)
         self.gripper_controller.set_zero_point()
         self.gripper_controller.down_enable_motor()
@@ -168,28 +165,22 @@ class ScaraV1MiniGripper():
         return open_angle * self.gear_ratio
 
     # 夹爪闭合
-    def close_gripper(self, speed_rpm=30):
+    def close_gripper(self, close_angle=0, speed_rpm=200):
         '''
         Args:
             speed_rpm: 夹爪闭合速度
         '''
-        result=self.gripper_controller.set_target_torque(-0.3)
-        if not result.get("success"):
-            return False
-        motor_pos = self._angle_to_motor_pos(self.gripper_close_angle)
+        motor_pos = self._angle_to_motor_pos(close_angle)
         return self.gripper_controller.set_target_position(motor_pos, speed_rpm)
         
 
     # 夹爪打开
-    def open_gripper(self, open_angle=None, speed_rpm=30):
+    def open_gripper(self, open_angle=14, speed_rpm=200):
         '''
         Args:
             open_angle: 夹爪打开角度
             speed_rpm: 夹爪打开速度
         '''
-        if open_angle is None:
-            open_angle = self.gripper_open_angle
-
         open_angle = max(self.min_open_angle, min(self.max_open_angle, open_angle))
         motor_pos = self._angle_to_motor_pos(open_angle)
         return self.gripper_controller.set_target_position(motor_pos, speed_rpm)
@@ -198,7 +189,7 @@ class ScaraV1MiniGripper():
     def quick_open_close_gripper(
         self,
         open_angle=2,
-        speed_rpm=30,
+        speed_rpm=200,
         close_torque=-0.5
     ):
         '''
@@ -218,28 +209,45 @@ class ScaraV1MiniGripper():
         self.gripper_controller.set_target_torque(close_torque)
         
 
-    # 切削动作(包括回刀)
-    def cut(self, cut_angle=40, speed_rpm=30):
+    # 切削动作(不包括回刀)
+    def cut(self, cut_angle=40, speed_rpm=200):
+        '''
+        Args:
+            cut_angle: 切削角度
+            speed_rpm: 切削速度
+        '''
         self.cutter_controller.set_target_torque(2.0)
         time.sleep(0.05)
         self.cutter_controller.set_target_position(self._angle_to_motor_pos(cut_angle), speed_rpm)
               
         return True
 
-    def home_cut(self, start_angle=-45, speed_rpm=30):
+    # 回刀动作
+    def home_cut(self, start_angle=-40, speed_rpm=200):
+        '''
+        Args:
+            start_angle: 回刀角度
+            speed_rpm: 回刀速度
+        '''
         self.cutter_controller.set_target_position(self._angle_to_motor_pos(start_angle), speed_rpm)
 
-    def homing(self, type="all"):
+    # 回零动作
+    def homing(self, type="all", homing_torque=-0.5):
+        '''
+        Args:
+            type: 回零类型，all: 回零基座和中间关节、夹爪和切刀，scara: 回零基座和中间关节，gripper: 回零夹刀，cutter: 回零切刀
+            homing_torque: 夹爪回零力矩
+        '''
         if type == "all":
             self._homing_scara()
             time.sleep(1)
-            self._homing_gripper()
+            self._homing_gripper(homing_torque=homing_torque)
             time.sleep(1)
             self._homing_cutter()
         elif type == "scara":
             self._homing_scara()
         elif type == "gripper":
-            self._homing_gripper()
+            self._homing_gripper(homing_torque=homing_torque)
         elif type == "cutter":
             self._homing_cutter()
         else:
@@ -248,18 +256,36 @@ class ScaraV1MiniGripper():
         return True
 
     def move_to_position_by_angle(self, target_joints_pos=(0, 0), speed_ratio=(1.0,1.0), blocking: bool=False,base_blocking_joint_angle = 0.5,middle_blocking_joint_angle = 0.5):
-
+        '''
+        Args:
+            target_joints_pos: 目标关节角度
+            speed_ratio: 速度比例
+            blocking: 是否阻塞
+            base_blocking_joint_angle: 基座容忍阻塞角度，单位：度
+            middle_blocking_joint_angle: 中间关节容忍阻塞角度，单位：度
+        '''
         return self.scara_arm.reach_target_joints_pos(target_joints_pos=target_joints_pos,
         speed_ratio=speed_ratio, blocking=blocking, base_blocking_joint_angle=base_blocking_joint_angle,
         middle_blocking_joint_angle=middle_blocking_joint_angle)
 
     def move_to_position_by_position(self, target_position=(0, 0), speed_ratio=(1.0,1.0), blocking: bool=False, base_blocking_joint_angle = 0.5,middle_blocking_joint_angle = 0.5):
-
+        '''
+        Args:
+            target_position: 目标位置
+            speed_ratio: 速度比例
+            blocking: 是否阻塞
+            base_blocking_joint_angle: 基座容忍阻塞角度，单位：度
+            middle_blocking_joint_angle: 中间关节容忍阻塞角度，单位：度
+        '''
         return self.scara_arm.reach_target_position(target_position=target_position, speed_ratio=speed_ratio, 
         blocking=blocking, base_blocking_joint_angle=base_blocking_joint_angle,
         middle_blocking_joint_angle=middle_blocking_joint_angle)
 
     def up_enable(self, type="all"):
+        '''
+        Args:
+            type: 使能类型，all: 使能基座和中间关节、夹爪和切刀，scara: 使能基座和中间关节，gripper: 使能夹爪，cutter: 使能切刀
+        '''
         if type == "all":
             self._up_enable_scara()
             self._up_enable_gripper()
@@ -276,6 +302,10 @@ class ScaraV1MiniGripper():
         return True
 
     def down_enable(self):
+        '''
+        Args:
+            type: 使能类型，all: 使能基座和中间关节、夹爪和切刀，scara: 使能基座和中间关节，gripper: 使能夹爪，cutter: 使能切刀
+        '''
         self.scara_arm.down_enable();
         self.gripper_controller.down_enable_motor();
         self.cutter_controller.down_enable_motor();
@@ -283,12 +313,25 @@ class ScaraV1MiniGripper():
         return True
 
     def get_current_scara_pos(self):
+        '''
+        Returns:
+            base_joint_pos: 基座关节角度
+            middle_joint_pos: 中间关节角度
+        '''
         return self.scara_arm.get_current_pos()
 
     def get_current_gripper_pos(self):
+        '''
+        Returns:
+            position: 夹爪位置
+        '''
         return self.gripper_controller.get_instantaneous_position()
 
     def get_current_cutter_pos(self):
+        '''
+        Returns:
+            position: 切刀位置
+        '''
         return self.cutter_controller.get_instantaneous_position()
 
 
