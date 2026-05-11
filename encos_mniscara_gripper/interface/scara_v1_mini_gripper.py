@@ -353,7 +353,7 @@ if __name__ == "__main__":
         for i in range(1,5):
             tmp = time.time()
             scara_v1_mini_gripper.home_cut(start_angle=-40, speed_rpm=200)
-            scara_v1_mini_gripper.move_to_position_by_angle(target_joints_pos=(180, -180), 
+            scara_v1_mini_gripper.move_to_position_by_angle(target_joints_pos=(190, -180), 
             speed_ratio=(0.5,0.5), blocking=True, base_blocking_joint_angle=1.5, 
             middle_blocking_joint_angle=1.5)
 
@@ -369,6 +369,9 @@ if __name__ == "__main__":
             scara_v1_mini_gripper.open_gripper(speed_rpm=200)
             time.sleep(0.5)
             print(f"Time: {time.time() - tmp}")
+        scara_v1_mini_gripper.move_to_position_by_angle(target_joints_pos=(-110, 190), 
+            speed_ratio=(0.5,0.5), blocking=True, base_blocking_joint_angle=1.5, 
+            middle_blocking_joint_angle=1.5)
 
         # print(scara_v1_mini_gripper.get_current_scara_pos())
         # print(scara_v1_mini_gripper.get_current_gripper_pos())
