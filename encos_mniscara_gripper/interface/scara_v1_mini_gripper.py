@@ -302,14 +302,9 @@ class ScaraV1MiniGripper():
         return True
 
     def down_enable(self):
-        '''
-        Args:
-            type: 使能类型，all: 使能基座和中间关节、夹爪和切刀，scara: 使能基座和中间关节，gripper: 使能夹爪，cutter: 使能切刀
-        '''
         self.scara_arm.down_enable();
         self.gripper_controller.down_enable_motor();
         self.cutter_controller.down_enable_motor();
-        time.sleep(1)
         return True
 
     def get_current_scara_pos(self):
