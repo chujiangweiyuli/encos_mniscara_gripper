@@ -6,8 +6,8 @@
         "can_id" : 1,
         "baudrate" : 1000000,
         "movement_range" : {
-            "min" : -270,
-            "max" : -110
+            "min" : -285,
+            "max" : -75
         },
         "initialization" : {
             "acceleration" : 6,
@@ -51,8 +51,8 @@
         "can_id" : 1,
         "baudrate" : 1000000,
         "movement_range" : {
-            "min" : 110,
-            "max" : 270
+            "min" : 75,
+            "max" : 285
         },
         "initialization" : {
             "acceleration" : 6,

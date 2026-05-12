@@ -357,7 +357,7 @@ class ScaraV1MiniGripper():
 
 
 if __name__ == "__main__":
-    scara_v1_mini_gripper = ScaraV1MiniGripper(robot_id=1, gripper_com_port="ZLG_31F10005727_1", gripper_config_data=SCARA_V1_MINI_GRIPPER_BASIC_CONFIG, basic_config_path=SCARA_V1_BASIC_CONFIG)
+    scara_v1_mini_gripper = ScaraV1MiniGripper(robot_id=0, gripper_com_port="ZLG_31F10005727_1", gripper_config_data=SCARA_V1_MINI_GRIPPER_BASIC_CONFIG, basic_config_path=SCARA_V1_BASIC_CONFIG)
 
     try:
         # scara_v1_mini_gripper.close_gripper(speed_rpm=30)
@@ -372,8 +372,8 @@ if __name__ == "__main__":
        # scara_v1_mini_gripper.quick_open_close_gripper()
        
 
-        scara_v1_mini_gripper.up_enable(type="all")
-        scara_v1_mini_gripper.homing(type="all")
+        scara_v1_mini_gripper.up_enable(type="cutter")
+        scara_v1_mini_gripper.homing(type="cutter")
 
 
         # tmp = time.time()
@@ -387,8 +387,8 @@ if __name__ == "__main__":
         # scara_v1_mini_gripper.quick_open_close_gripper(open_angle=2, speed_rpm=200, close_torque=-0.8)
         # time.sleep(0.2)
         # scara_v1_mini_gripper.cut(cut_angle=40, speed_rpm=200)
-        # scara_v1_mini_gripper.move_to_position_by_position(target_position=(110, 220), 
-        # speed_ratio=(0.1,0.1), blocking=True, base_blocking_joint_angle=1.5, 
+        # scara_v1_mini_gripper.move_to_position_by_position(target_position=(300, 0), 
+        # speed_ratio=(0.5,0.5), blocking=True, base_blocking_joint_angle=1.5, 
         # middle_blocking_joint_angle=1.5)
         # time.sleep(0.2)
         # scara_v1_mini_gripper.open_gripper(speed_rpm=200)
