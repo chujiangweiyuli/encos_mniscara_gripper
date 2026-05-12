@@ -1,5 +1,7 @@
 import asyncio
 import json
+import math
+import random
 import struct
 import sys
 import time
@@ -125,7 +127,7 @@ class ScaraV1MiniGripper():
         self.gripper_controller.set_zero_point()
         self.gripper_controller.down_enable_motor()
         print("回零夹爪电机完成")
-        logger.info(f"Homing completed")
+        logger.info(f"Homing gripper completed")
         return True
 
     def _homing_cutter(self):
@@ -136,14 +138,14 @@ class ScaraV1MiniGripper():
         self.cutter_controller.set_zero_point()
         # self.cutter_controller.down_enable_motor()
         print("回零切刀电机完成")
-        logger.info(f"Homing completed")
+        logger.info(f"Homing cutter completed")
         return True
 
     def _homing_scara(self):
         print("开始回零基座和中间关节")
         self.scara_arm.calibration()
         print("回零基座和中间关节完成")
-        logger.info(f"Homing completed")
+        logger.info(f"Homing scara completed")
         return True
 
 
@@ -203,13 +205,8 @@ class ScaraV1MiniGripper():
         motor_pos = self._angle_to_motor_pos(open_angle)
         return self.gripper_controller.set_target_position(motor_pos, speed_rpm)
 
-    # 快速打开闭合夹爪
-    def quick_open_close_gripper(
-        self,
-        open_angle=2,
-        speed_rpm=200,
-        close_torque=-0.5
-    ):
+    # 夹爪快速开合
+    def quick_open_close_gripper(self,open_angle=2,speed_rpm=200,close_torque=-0.5):
         '''
         Args:
             open_angle: 夹爪打开角度（逻辑角，度）
@@ -235,7 +232,7 @@ class ScaraV1MiniGripper():
             speed_rpm: 切削速度
         '''
         self.cutter_controller.set_target_torque(2.0)
-        time.sleep(0.05)
+        time.sleep(0.048)
         self.cutter_controller.set_target_position(self._angle_to_motor_pos(cut_angle), speed_rpm)
               
         return True
@@ -266,8 +263,8 @@ class ScaraV1MiniGripper():
             self._homing_cutter()
         elif type == "scara":
             self._homing_scara()
-        elif type == "lifting":
-            # self._homing_lifting()
+        # elif type == "lifting":
+        #     # self._homing_lifting()
             pass
         elif type == "gripper":
             self._homing_gripper(homing_torque=homing_torque)
@@ -372,28 +369,40 @@ if __name__ == "__main__":
        # scara_v1_mini_gripper.quick_open_close_gripper()
        
 
-        scara_v1_mini_gripper.up_enable(type="cutter")
-        scara_v1_mini_gripper.homing(type="cutter")
+        # scara_v1_mini_gripper.up_enable(type="all")
+        # scara_v1_mini_gripper.homing(type="all")
 
+        for i in range(10):
+            tmp = time.time()
+            scara_v1_mini_gripper.quick_open_close_gripper(open_angle=2, speed_rpm=200, close_torque=-0.8)
+            time.sleep(0.2)
+            scara_v1_mini_gripper.cut(cut_angle=40, speed_rpm=200)
+            time.sleep(0.2)
 
-        # tmp = time.time()
-        # scara_v1_mini_gripper.home_cut(start_angle=-40, speed_rpm=200)
-        # scara_v1_mini_gripper.move_to_position_by_angle(target_joints_pos=(190, -180), 
-        # speed_ratio=(0.1,0.1), blocking=True, base_blocking_joint_angle=1.5, 
-        # middle_blocking_joint_angle=1.5)
-
-        # scara_v1_mini_gripper.open_gripper(speed_rpm=200)
-        # time.sleep(1)
-        # scara_v1_mini_gripper.quick_open_close_gripper(open_angle=2, speed_rpm=200, close_torque=-0.8)
-        # time.sleep(0.2)
-        # scara_v1_mini_gripper.cut(cut_angle=40, speed_rpm=200)
-        # scara_v1_mini_gripper.move_to_position_by_position(target_position=(300, 0), 
-        # speed_ratio=(0.5,0.5), blocking=True, base_blocking_joint_angle=1.5, 
-        # middle_blocking_joint_angle=1.5)
-        # time.sleep(0.2)
-        # scara_v1_mini_gripper.open_gripper(speed_rpm=200)
-        # time.sleep(0.5)
-        # print(f"Time: {time.time() - tmp}")
+            R = 440.0
+            R2 = R * R
+            R1 = 220
+            R12 = R1 * R1
+            while True:
+                theta = random.uniform(0.0, 2.0 * math.pi)
+                r = R * math.sqrt(random.random())
+                xf, yf = r * math.cos(theta), r * math.sin(theta)
+                tmpx = math.floor(xf)
+                tmpy = math.floor(yf)
+                if R12 <= tmpx * tmpx + tmpy * tmpy <= R2 and tmpx > 0 and tmpy > 0:
+                    break
+            print(f"tmpx: {tmpx}, tmpy: {tmpy}")
+            scara_v1_mini_gripper.move_to_position_by_position(target_position=(tmpx, tmpy), 
+            speed_ratio=(0.15,0.15), blocking=True, base_blocking_joint_angle=30.5, 
+            middle_blocking_joint_angle=30.5)
+            scara_v1_mini_gripper.open_gripper(speed_rpm=200)
+            time.sleep(0.5)
+            scara_v1_mini_gripper.home_cut(start_angle=-40, speed_rpm=200)
+            scara_v1_mini_gripper.open_gripper(speed_rpm=200)
+            scara_v1_mini_gripper.move_to_position_by_angle(target_joints_pos=(190, -180), 
+            speed_ratio=(0.3,0.3), blocking=True, base_blocking_joint_angle=10.5, 
+            middle_blocking_joint_angle=10.5)
+            print(f"Time: {time.time() - tmp}")
         # scara_v1_mini_gripper.move_to_position_by_angle(target_joints_pos=(-180, 180), 
         # speed_ratio=(0.5,0.5), blocking=True, base_blocking_joint_angle=1.5, 
         # middle_blocking_joint_angle=1.5)

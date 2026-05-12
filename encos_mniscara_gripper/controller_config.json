@@ -10,7 +10,7 @@
             "max" : -75
         },
         "initialization" : {
-            "acceleration" : 6,
+            "acceleration" : 2,
             "up_enable" : true
         }
     },
@@ -40,7 +40,7 @@
             "max" : 250
         },
         "initialization" : {
-            "acceleration" : 10,
+            "acceleration" : 2,
             "up_enable" : true
         }
     },
@@ -55,7 +55,7 @@
             "max" : 285
         },
         "initialization" : {
-            "acceleration" : 6,
+            "acceleration" : 2,
             "up_enable" : true
         }
     },
@@ -70,7 +70,7 @@
             "max" : -15
         },
         "initialization" : {
-            "acceleration" : 10,
+            "acceleration" : 2,
             "up_enable" : true
         }
     },
